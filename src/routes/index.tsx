@@ -1,6 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useEffect, useState, type FormEvent } from "react";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
+import { getLoginProfile } from "@/lib/profile.functions";
+import { canAccessOwnerDashboard, loginErrorMessage } from "@/lib/owner-access";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,18 +25,70 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<{ type: "error" | "ok"; text: string } | null>(null);
+  const navigate = useNavigate();
+  const fetchProfile = useServerFn(getLoginProfile);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function restoreSession() {
+      try {
+        const { data } = await supabase.auth.getUser();
+        if (!data.user || cancelled) return;
+        setSignedIn(true);
+        const profile = await fetchProfile();
+        if (cancelled) return;
+        if (canAccessOwnerDashboard(profile)) await navigate({ to: "/owner", replace: true });
+        else setMsg({ type: "error", text: profile ? "Akun Anda tidak memiliki akses dashboard OWNER." : "Profil pengguna tidak ditemukan. Hubungi pemilik barbershop." });
+      } catch {
+        if (!cancelled) setMsg({ type: "error", text: "Profil pengguna tidak dapat dimuat. Silakan coba lagi." });
+      }
+    }
+    void restoreSession();
+    return () => { cancelled = true; };
+  }, [fetchProfile, navigate]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setMsg(null);
-    if (!supabase) {
-      setMsg({ type: "error", text: "Koneksi Supabase belum dikonfigurasi." });
-      return;
-    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    setMsg(error ? { type: "error", text: "Email atau password salah." } : { type: "ok", text: "Berhasil masuk." });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) {
+        setMsg({ type: "error", text: loginErrorMessage(error) });
+        return;
+      }
+      if (!data.user || !data.session) {
+        setMsg({ type: "error", text: "Sesi login tidak tersedia. Silakan coba lagi." });
+        return;
+      }
+      setSignedIn(true);
+      const profile = await fetchProfile();
+      if (!profile) {
+        setMsg({ type: "error", text: "Profil pengguna tidak ditemukan. Hubungi pemilik barbershop." });
+        return;
+      }
+      if (!canAccessOwnerDashboard(profile)) {
+        setMsg({ type: "error", text: "Akun Anda tidak memiliki akses dashboard OWNER." });
+        return;
+      }
+      await navigate({ to: "/owner", replace: true });
+    } catch {
+      setMsg({ type: "error", text: "Koneksi atau profil pengguna tidak dapat dimuat. Silakan coba lagi." });
+    } finally { setLoading(false); }
+  }
+
+  async function signOut() {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setSignedIn(false);
+      setMsg(null);
+      setPassword("");
+    } catch {
+      setMsg({ type: "error", text: "Tidak dapat keluar. Silakan coba lagi." });
+    } finally { setLoading(false); }
   }
 
   const input =
@@ -61,9 +117,10 @@ function LoginPage() {
           {msg && (
             <p role="alert" className={`text-sm ${msg.type === "error" ? "text-accent" : "text-primary"}`}>{msg.text}</p>
           )}
-          <button type="submit" disabled={loading} className="w-full rounded-sm bg-primary py-3 font-bold uppercase tracking-widest text-primary-foreground transition hover:shadow-glow disabled:opacity-60">
+          <Button type="submit" disabled={loading} className="h-12 w-full rounded-sm font-bold uppercase tracking-widest transition hover:shadow-glow">
             {loading ? "Memproses..." : "Masuk"}
-          </button>
+          </Button>
+          {signedIn && <Button type="button" variant="outline" disabled={loading} onClick={signOut} className="w-full">Keluar</Button>}
           {!isSupabaseConfigured && (
             <p className="text-center text-xs text-muted-foreground">Menunggu koneksi ke Supabase.</p>
           )}

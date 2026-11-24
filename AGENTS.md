@@ -30,4 +30,6 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Backend is the user's existing external Supabase project via `src/lib/supabase.ts` (env VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY); never enable Lovable Cloud or create tables — user requirement.
+- `src/lib/supabase.ts` re-exports the integration-managed Supabase client so login, route guards, and bearer attachment share one session and preview storage.
+- Profile functions query only the verified caller's profile with authenticated RLS; the owner dashboard revalidates its role on the server on every route load, without privileged clients.
+- Keep the signed-in dashboard under the client-only `_authenticated` layout and the login public; local browser sessions cannot be read during SSR.
