@@ -1,4 +1,8 @@
 # Login SOHOBARBER
+- [x] Build the OWNER summary from live Supabase revenue, transaction, booking, and customer data.
+- [x] Add seven OWNER navigation destinations with real read-only data and active-owner checks.
+- [x] Test date boundaries, totals, empty data, access rules, and signed-out desktop/mobile navigation.
+- [ ] Verify signed-in desktop/mobile dashboard rendering and all seven live menu reads — blocked: no active preview viewer or available external-Supabase signed-in test session.
 - [x] Prevent first-visit OWNER script failures and verify the user's signed-in page after the change.
 - [x] Connect email/password login and read the signed-in user's profile.
 - [x] Restrict OWNER dashboard and provide clear errors and sign-out.

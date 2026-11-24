@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
+import { Route as AuthenticatedOwnerSectionRouteImport } from './routes/_authenticated/owner_.$section'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,16 +34,24 @@ const AuthenticatedOwnerRoute = AuthenticatedOwnerRouteImport.update({
   path: '/owner',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOwnerSectionRoute =
+  AuthenticatedOwnerSectionRouteImport.update({
+    id: '/owner_/$section',
+    path: '/owner/$section',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/owner': typeof AuthenticatedOwnerRoute
+  '/owner/$section': typeof AuthenticatedOwnerSectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/owner': typeof AuthenticatedOwnerRoute
+  '/owner/$section': typeof AuthenticatedOwnerSectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,13 +59,20 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/owner': typeof AuthenticatedOwnerRoute
+  '/_authenticated/owner_/$section': typeof AuthenticatedOwnerSectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/owner'
+  fullPaths: '/' | '/auth' | '/owner' | '/owner/$section'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/owner'
-  id: '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/owner'
+  to: '/' | '/auth' | '/owner' | '/owner/$section'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/owner'
+    | '/_authenticated/owner_/$section'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,15 +111,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOwnerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/owner_/$section': {
+      id: '/_authenticated/owner_/$section'
+      path: '/owner/$section'
+      fullPath: '/owner/$section'
+      preLoaderRoute: typeof AuthenticatedOwnerSectionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedOwnerRoute: typeof AuthenticatedOwnerRoute
+  AuthenticatedOwnerSectionRoute: typeof AuthenticatedOwnerSectionRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOwnerRoute: AuthenticatedOwnerRoute,
+  AuthenticatedOwnerSectionRoute: AuthenticatedOwnerSectionRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

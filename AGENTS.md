@@ -34,3 +34,5 @@ use the editor.
 - Profile functions query only the verified caller's profile with authenticated RLS; the owner dashboard revalidates its role on the server on every route load, without privileged clients.
 - Keep the signed-in dashboard under the client-only `_authenticated` layout and the login public; local browser sessions cannot be read during SSR.
 - Pre-optimize dependencies introduced by code-split routes in Vite when runtime discovery invalidates modules during first navigation; keep route components code-split.
+- OWNER dashboard and section functions share the server-side active-owner check; read-only menu destinations use a validated dynamic section route with paginated RLS-scoped queries.
+- Dashboard days follow the stored business timezone; revenue sums completed transactions using paginated reads, counts use exact head queries, and read errors must not masquerade as empty zero data.

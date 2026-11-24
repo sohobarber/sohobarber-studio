@@ -6,7 +6,7 @@ export type LoginProfile = {
 };
 
 export function canAccessOwnerDashboard(profile: LoginProfile | null): boolean {
-  return profile?.role === "owner";
+  return profile?.role === "owner" && profile.is_active === true;
 }
 
 export function loginErrorMessage(error: { code?: string | undefined; status?: number | undefined }): string {

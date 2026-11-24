@@ -10,6 +10,9 @@ describe("OWNER access", () => {
   it("denies cashier", () => {
     expect(canAccessOwnerDashboard({ ...profile, role: "cashier" })).toBe(false);
   });
+  it("denies an inactive owner", () => {
+    expect(canAccessOwnerDashboard({ ...profile, role: "owner", is_active: false })).toBe(false);
+  });
   it("denies barber", () => {
     expect(canAccessOwnerDashboard({ ...profile, role: "barber" })).toBe(false);
   });
