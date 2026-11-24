@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Backend is the user's existing external Supabase project via `src/lib/supabase.ts` (env VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY); never enable Lovable Cloud or create tables — user requirement.
