@@ -33,3 +33,4 @@ use the editor.
 - `src/lib/supabase.ts` re-exports the integration-managed Supabase client so login, route guards, and bearer attachment share one session and preview storage.
 - Profile functions query only the verified caller's profile with authenticated RLS; the owner dashboard revalidates its role on the server on every route load, without privileged clients.
 - Keep the signed-in dashboard under the client-only `_authenticated` layout and the login public; local browser sessions cannot be read during SSR.
+- Pre-optimize dependencies introduced by code-split routes in Vite when runtime discovery invalidates modules during first navigation; keep route components code-split.
