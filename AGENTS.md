@@ -36,3 +36,4 @@ use the editor.
 - Pre-optimize dependencies introduced by code-split routes in Vite when runtime discovery invalidates modules during first navigation; keep route components code-split.
 - OWNER dashboard and section functions share the server-side active-owner check; read-only menu destinations use a validated dynamic section route with paginated RLS-scoped queries.
 - Dashboard days follow the stored business timezone; revenue sums completed transactions using paginated reads, counts use exact head queries, and read errors must not masquerade as empty zero data.
+- Service create and update functions share constraint-specific error classification in service rules so duplicate names have consistent, safe feedback without exposing other database errors.

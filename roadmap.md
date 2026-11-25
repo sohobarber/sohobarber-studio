@@ -1,4 +1,5 @@
 # Login SOHOBARBER
+- [ ] Handle duplicate service names on create/update and verify pencil editing — live signed-in verification requires an available OWNER session.
 - [x] Build the OWNER summary from live Supabase revenue, transaction, booking, and customer data.
 - [x] Add seven OWNER navigation destinations with real read-only data and active-owner checks.
 - [x] Test date boundaries, totals, empty data, access rules, and signed-out desktop/mobile navigation.

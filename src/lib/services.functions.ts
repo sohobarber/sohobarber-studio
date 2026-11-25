@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { serviceInput } from "@/lib/service-rules";
+import { serviceInput, serviceWriteErrorMessage } from "@/lib/service-rules";
 
 async function ownerOrThrow(context: { supabase: any; userId: string }) {
   const { activeOwner } = await import("@/lib/owner.server");
@@ -32,7 +32,7 @@ export const createService = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     await ownerOrThrow(context);
     const { error } = await context.supabase.from("services").insert({ name: data.name, price: data.price, is_active: true });
-    if (error) throw new Error("Layanan tidak dapat disimpan.");
+    if (error) throw new Error(serviceWriteErrorMessage(error, "Layanan tidak dapat disimpan."));
     return { ok: true };
   });
 
@@ -42,7 +42,8 @@ export const updateService = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     await ownerOrThrow(context);
     const { error, count } = await context.supabase.from("services").update({ name: data.name, price: data.price }, { count: "exact" }).eq("id", data.id);
-    if (error || !count) throw new Error("Layanan tidak dapat diubah.");
+    if (error) throw new Error(serviceWriteErrorMessage(error, "Layanan tidak dapat diubah."));
+    if (!count) throw new Error("Layanan tidak dapat diubah.");
     return { ok: true };
   });
 

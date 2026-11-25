@@ -42,7 +42,7 @@ function ServicesPage() {
   async function add(e: FormEvent) {
     e.preventDefault();
     const v = validate(name, price);
-    if (!v.data) return setError(v.error!);
+    if (!v.data) return setError(v.error ?? "Data tidak valid.");
     setBusy(true); setError("");
     try { await create({ data: v.data }); setName(""); setPrice(""); await router.invalidate({ sync: true }); }
     catch (err) { setError(err instanceof Error ? err.message : "Layanan tidak dapat disimpan."); }
@@ -88,7 +88,7 @@ function ServiceRow({ service }: { service: Service }) {
   async function save(e: FormEvent) {
     e.preventDefault();
     const v = validate(name, price);
-    if (!v.data) return setError(v.error!);
+    if (!v.data) return setError(v.error ?? "Data tidak valid.");
     if (await run(() => update({ data: { id: service.id, ...v.data } }))) setEditing(false);
   }
 
@@ -104,7 +104,7 @@ function ServiceRow({ service }: { service: Service }) {
           <div className="flex items-center gap-4">
             <p className="text-sm font-bold tabular-nums text-primary">{rupiah(service.price)}</p>
             <Switch checked={service.is_active} disabled={busy} aria-label={service.is_active ? "Nonaktifkan layanan" : "Aktifkan layanan"} onCheckedChange={checked => run(() => toggle({ data: { id: service.id, is_active: checked } }))} />
-            <Button size="icon" variant="ghost" aria-label="Ubah layanan" onClick={() => setEditing(true)}><Pencil /></Button>
+             <Button size="icon" variant="ghost" disabled={busy} aria-label="Ubah layanan" onClick={() => { setName(service.name); setPrice(String(service.price)); setError(""); setEditing(true); }}><Pencil /></Button>
           </div>
         </div>}
     {error && <p role="alert" className="mt-2 text-sm text-accent">{error}</p>}

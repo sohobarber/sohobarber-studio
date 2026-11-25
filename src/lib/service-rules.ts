@@ -6,6 +6,21 @@ export const serviceInput = z.object({
 });
 export type ServiceInput = z.infer<typeof serviceInput>;
 
+type ServiceWriteError = { code: string; message: string; details?: string; constraint?: string };
+
+export function isDuplicateServiceName(error: ServiceWriteError): boolean {
+  return error.code === "23505" && (
+    error.constraint === "services_name_key" ||
+    /\bservices_name_key\b/.test(`${error.message} ${error.details ?? ""}`)
+  );
+}
+
+export function serviceWriteErrorMessage(error: ServiceWriteError, fallback: string): string {
+  return isDuplicateServiceName(error)
+    ? "Nama layanan sudah digunakan. Silakan ubah layanan yang sudah ada."
+    : fallback;
+}
+
 export function parsePrice(text: string): number {
   const digits = text.replace(/\D/g, "");
   return digits === "" ? Number.NaN : Number(digits);
