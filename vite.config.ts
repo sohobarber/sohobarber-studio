@@ -14,7 +14,7 @@ export default defineConfig({
     optimizeDeps: {
       // Both screens are code-split: prepare icons and shared button dependencies
       // so first navigation does not invalidate module URLs through discovery.
-      include: ["lucide-react", "@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge", "date-fns-tz"],
+      include: ["lucide-react", "@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge", "date-fns-tz", "@radix-ui/react-switch", "@radix-ui/react-label", "zod"],
     },
   },
   tanstackStart: {
