@@ -39,14 +39,14 @@ describe("editing an existing service", () => {
     const Page = Route.options.component as ComponentType;
     render(<Page />);
     fireEvent.click(screen.getByRole("button", { name: "Ubah layanan" }));
-    fireEvent.change(screen.getByRole("textbox", { name: "Harga", exact: true }), { target: { value: "45.000" } });
-    fireEvent.click(screen.getByRole("button", { name: "Simpan", exact: true }));
+    fireEvent.change(screen.getByRole("textbox", { name: "Harga" }), { target: { value: "45.000" } });
+    fireEvent.click(screen.getByRole("button", { name: "Simpan" }));
     await waitFor(() => expect(mocks.update).toHaveBeenCalledWith({
       data: { id: "81fcef33-32bd-40e6-ad73-b7c87d0ceb41", name: "Haircut", price: 45000 },
     }));
     await waitFor(() => expect(mocks.invalidate).toHaveBeenCalledWith({ sync: true }));
-    await waitFor(() => expect(screen.queryByRole("button", { name: "Simpan", exact: true })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Simpan" })).toBeNull());
     fireEvent.click(screen.getByRole("button", { name: "Ubah layanan" }));
-    expect(screen.getByRole("textbox", { name: "Harga", exact: true })).toHaveValue("40000");
+    expect(screen.getByRole("textbox", { name: "Harga" })).toHaveValue("40000");
   });
 });
