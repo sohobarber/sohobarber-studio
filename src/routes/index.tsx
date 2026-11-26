@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState, type FormEvent } from "react";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
@@ -125,7 +125,7 @@ function LoginPage() {
             <p className="text-center text-xs text-muted-foreground">Menunggu koneksi ke Supabase.</p>
           )}
         </form>
-        <p className="mt-8 text-center text-xs text-muted-foreground">© SOHOBARBER</p>
+        <p className="mt-8 text-center text-xs text-muted-foreground"><Link to="/booking" className="text-primary hover:underline">Booking sebagai pelanggan</Link> · © SOHOBARBER</p>
       </div>
     </main>
   );

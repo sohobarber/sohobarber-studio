@@ -34,10 +34,10 @@ export const getOwnerSection = createServerFn({ method: "POST" })
         break;
       }
       case "booking": {
-        const result = await client.from("bookings").select("id, customer_name, booking_date, start_time, booking_code", { count: "exact" }).order("booking_date", { ascending: false }).order("start_time").range(start, end);
+        const result = await client.from("bookings").select("id, customer_name, booking_date, start_time, booking_code, status", { count: "exact" }).order("booking_date", { ascending: false }).order("start_time").range(start, end);
         if (result.error) throw new Error("Booking tidak dapat dimuat.");
         count = result.count ?? 0;
-        rows = result.data.map(r => ({ id: r.id, label: r.customer_name, detail: r.booking_code, value: `${r.booking_date} · ${r.start_time.slice(0, 5)}` }));
+        rows = result.data.map(r => ({ id: r.id, label: r.customer_name, detail: `${r.booking_code} · ${r.status === "pending_verification" ? "Menunggu konfirmasi DP" : r.status}`, value: `${r.booking_date} · ${r.start_time.slice(0, 5)}` }));
         break;
       }
       case "barber": {

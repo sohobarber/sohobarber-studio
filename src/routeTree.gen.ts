@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BookingRouteImport } from './routes/booking'
 import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
 import { Route as AuthenticatedOwnerSectionRouteImport } from './routes/_authenticated/owner_.$section'
 import { Route as AuthenticatedOwnerLayananRouteImport } from './routes/_authenticated/owner_.layanan'
@@ -28,6 +29,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingRoute = BookingRouteImport.update({
+  id: '/booking',
+  path: '/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOwnerRoute = AuthenticatedOwnerRouteImport.update({
@@ -51,6 +57,7 @@ const AuthenticatedOwnerLayananRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/booking': typeof BookingRoute
   '/owner': typeof AuthenticatedOwnerRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/booking': typeof BookingRoute
   '/owner': typeof AuthenticatedOwnerRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
@@ -67,20 +75,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/booking': typeof BookingRoute
   '/_authenticated/owner': typeof AuthenticatedOwnerRoute
   '/_authenticated/owner_/$section': typeof AuthenticatedOwnerSectionRoute
   '/_authenticated/owner_/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/owner' | '/owner/$section' | '/owner/layanan'
+  fullPaths:
+    '/' | '/auth' | '/booking' | '/owner' | '/owner/$section' | '/owner/layanan'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/owner' | '/owner/$section' | '/owner/layanan'
+  to:
+    '/' | '/auth' | '/booking' | '/owner' | '/owner/$section' | '/owner/layanan'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/booking'
     | '/_authenticated/owner'
     | '/_authenticated/owner_/$section'
     | '/_authenticated/owner_/layanan'
@@ -90,6 +102,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BookingRoute: typeof BookingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -113,6 +126,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/booking': {
+      id: '/booking'
+      path: '/booking'
+      fullPath: '/booking'
+      preLoaderRoute: typeof BookingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/owner': {
@@ -158,6 +178,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BookingRoute: BookingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
