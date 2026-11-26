@@ -37,3 +37,4 @@ use the editor.
 - OWNER dashboard and section functions share the server-side active-owner check; read-only menu destinations use a validated dynamic section route with paginated RLS-scoped queries.
 - Dashboard days follow the stored business timezone; revenue sums completed transactions using paginated reads, counts use exact head queries, and read errors must not masquerade as empty zero data.
 - Service create and update functions share constraint-specific error classification in service rules so duplicate names have consistent, safe feedback without exposing other database errors.
+- Public customer booking uses server functions with the server admin client, exposing only safe columns and validating slots/clashes server-side, because booking tables are OWNER-only under RLS.
