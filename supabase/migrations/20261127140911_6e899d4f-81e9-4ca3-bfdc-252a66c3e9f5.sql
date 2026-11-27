@@ -1,0 +1,1 @@
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.services, public.employees, public.business_settings, public.closed_dates, public.bookings, public.barber_schedules, public.customers, public.payments TO service_role;
