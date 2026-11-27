@@ -44,7 +44,7 @@ function BarbersPage() {
     const v = validate(name, phone);
     if (!v.data) return setError(v.error ?? "Data tidak valid.");
     setBusy(true); setError("");
-    try { await create({ data: v.data }); setName(""); setPhone(""); await router.invalidate({ sync: true }); }
+    try { await create({ data: { full_name: name, phone } }); setName(""); setPhone(""); await router.invalidate({ sync: true }); }
     catch (err) { setError(err instanceof Error ? err.message : "Barber tidak dapat disimpan."); }
     finally { setBusy(false); }
   }
@@ -89,7 +89,7 @@ function BarberRow({ barber }: { barber: Barber }) {
     e.preventDefault();
     const v = validate(name, phone);
     if (!v.data) return setError(v.error ?? "Data tidak valid.");
-    if (await run(() => update({ data: { id: barber.id, ...v.data } }))) setEditing(false);
+    if (await run(() => update({ data: { id: barber.id, full_name: name, phone } }))) setEditing(false);
   }
 
   return <article className={`border-b border-border py-5 last:border-b-0 ${barber.is_active ? "" : "opacity-60"}`}>
