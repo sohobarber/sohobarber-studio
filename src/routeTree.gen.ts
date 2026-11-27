@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookingRouteImport } from './routes/booking'
 import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
 import { Route as AuthenticatedOwnerSectionRouteImport } from './routes/_authenticated/owner_.$section'
+import { Route as AuthenticatedOwnerBarberRouteImport } from './routes/_authenticated/owner_.barber'
 import { Route as AuthenticatedOwnerLayananRouteImport } from './routes/_authenticated/owner_.layanan'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,12 @@ const AuthenticatedOwnerSectionRoute =
     path: '/owner/$section',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOwnerBarberRoute =
+  AuthenticatedOwnerBarberRouteImport.update({
+    id: '/owner_/barber',
+    path: '/owner/barber',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOwnerLayananRoute =
   AuthenticatedOwnerLayananRouteImport.update({
     id: '/owner_/layanan',
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/booking': typeof BookingRoute
   '/owner': typeof AuthenticatedOwnerRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
+  '/owner/barber': typeof AuthenticatedOwnerBarberRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +76,7 @@ export interface FileRoutesByTo {
   '/booking': typeof BookingRoute
   '/owner': typeof AuthenticatedOwnerRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
+  '/owner/barber': typeof AuthenticatedOwnerBarberRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRoutesById {
@@ -78,15 +87,28 @@ export interface FileRoutesById {
   '/booking': typeof BookingRoute
   '/_authenticated/owner': typeof AuthenticatedOwnerRoute
   '/_authenticated/owner_/$section': typeof AuthenticatedOwnerSectionRoute
+  '/_authenticated/owner_/barber': typeof AuthenticatedOwnerBarberRoute
   '/_authenticated/owner_/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/booking' | '/owner' | '/owner/$section' | '/owner/layanan'
+    | '/'
+    | '/auth'
+    | '/booking'
+    | '/owner'
+    | '/owner/$section'
+    | '/owner/barber'
+    | '/owner/layanan'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/auth' | '/booking' | '/owner' | '/owner/$section' | '/owner/layanan'
+    | '/'
+    | '/auth'
+    | '/booking'
+    | '/owner'
+    | '/owner/$section'
+    | '/owner/barber'
+    | '/owner/layanan'
   id:
     | '__root__'
     | '/'
@@ -95,6 +117,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/_authenticated/owner'
     | '/_authenticated/owner_/$section'
+    | '/_authenticated/owner_/barber'
     | '/_authenticated/owner_/layanan'
   fileRoutesById: FileRoutesById
 }
@@ -149,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOwnerSectionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/owner_/barber': {
+      id: '/_authenticated/owner_/barber'
+      path: '/owner/barber'
+      fullPath: '/owner/barber'
+      preLoaderRoute: typeof AuthenticatedOwnerBarberRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/owner_/layanan': {
       id: '/_authenticated/owner_/layanan'
       path: '/owner/layanan'
@@ -162,12 +192,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedOwnerRoute: typeof AuthenticatedOwnerRoute
   AuthenticatedOwnerSectionRoute: typeof AuthenticatedOwnerSectionRoute
+  AuthenticatedOwnerBarberRoute: typeof AuthenticatedOwnerBarberRoute
   AuthenticatedOwnerLayananRoute: typeof AuthenticatedOwnerLayananRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOwnerRoute: AuthenticatedOwnerRoute,
   AuthenticatedOwnerSectionRoute: AuthenticatedOwnerSectionRoute,
+  AuthenticatedOwnerBarberRoute: AuthenticatedOwnerBarberRoute,
   AuthenticatedOwnerLayananRoute: AuthenticatedOwnerLayananRoute,
 }
 
