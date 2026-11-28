@@ -1,13 +1,10 @@
-# Login SOHOBARBER
-- [ ] Handle duplicate service names on create/update and verify pencil editing — live signed-in verification requires an available OWNER session.
-- [x] Build the OWNER summary from live Supabase revenue, transaction, booking, and customer data.
-- [x] Add seven OWNER navigation destinations with real read-only data and active-owner checks.
-- [x] Test date boundaries, totals, empty data, access rules, and signed-out desktop/mobile navigation.
-- [ ] Verify signed-in desktop/mobile dashboard rendering and all seven live menu reads — blocked: no active preview viewer or available external-Supabase signed-in test session.
-- [x] Prevent first-visit OWNER script failures and verify the user's signed-in page after the change.
-- [x] Connect email/password login and read the signed-in user's profile.
-- [x] Restrict OWNER dashboard and provide clear errors and sign-out.
-- [x] Test role restrictions and check the login page, invalid-credential errors, and signed-out dashboard access.
-- [ ] Verify successful login and sign-out with a real OWNER session — blocked: the external Supabase project cannot supply an automated signed-in session.- [x] Customer web booking page (/booking): active services, barber, date/slot, 50% DP manual, Home Service address, clash checks.
-- [ ] Booking page loads live data — blocked: server access to booking tables (service_role grants) was declined.
-- [ ] OWNER confirm/reject DP action in Booking menu.
+# SOHOBARBER
+
+- [ ] Audit prompt terhadap routing, autentikasi, skema, dan fitur yang sudah berjalan.
+- [ ] Lengkapi booking pelanggan: aturan DP, pilihan barber mana saja, pembayaran, keamanan formulir, dan pencegahan bentrok.
+- [ ] Tambahkan tindak lanjut booking: unggah bukti, tautan status, pembatalan, dan verifikasi OWNER sesuai batasan skema/RLS saat ini.
+- [ ] Lengkapi kasir: transaksi booking/walk-in, produk, diskon, DP, sisa bayar, struk, dan pembatalan beralasan.
+- [ ] Tambahkan pengeluaran dan laporan OWNER dengan data asli serta ekspor CSV.
+- [ ] Lengkapi pengaturan yang didukung skema saat ini.
+- [ ] Jalankan pengujian aturan, pemeriksaan build, alur browser, dan security scan; jangan publish.
+- [ ] Terdokumentasi: fitur yang memerlukan perubahan skema/RLS tetap ditahan karena instruksi proyek melarang perubahan database.
