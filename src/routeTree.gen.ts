@@ -13,9 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookingRouteImport } from './routes/booking'
+import { Route as AuthenticatedBarberRouteImport } from './routes/_authenticated/barber'
+import { Route as AuthenticatedKasirRouteImport } from './routes/_authenticated/kasir'
 import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
+import { Route as BookingBookingIdRouteImport } from './routes/booking_.$bookingId'
 import { Route as AuthenticatedOwnerSectionRouteImport } from './routes/_authenticated/owner_.$section'
 import { Route as AuthenticatedOwnerBarberRouteImport } from './routes/_authenticated/owner_.barber'
+import { Route as AuthenticatedOwnerBookingRouteImport } from './routes/_authenticated/owner_.booking'
+import { Route as AuthenticatedOwnerKasirRouteImport } from './routes/_authenticated/owner_.kasir'
 import { Route as AuthenticatedOwnerLayananRouteImport } from './routes/_authenticated/owner_.layanan'
 
 const IndexRoute = IndexRouteImport.update({
@@ -37,10 +42,25 @@ const BookingRoute = BookingRouteImport.update({
   path: '/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedBarberRoute = AuthenticatedBarberRouteImport.update({
+  id: '/barber',
+  path: '/barber',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedKasirRoute = AuthenticatedKasirRouteImport.update({
+  id: '/kasir',
+  path: '/kasir',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOwnerRoute = AuthenticatedOwnerRouteImport.update({
   id: '/owner',
   path: '/owner',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const BookingBookingIdRoute = BookingBookingIdRouteImport.update({
+  id: '/booking_/$bookingId',
+  path: '/booking/$bookingId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOwnerSectionRoute =
   AuthenticatedOwnerSectionRouteImport.update({
@@ -54,6 +74,17 @@ const AuthenticatedOwnerBarberRoute =
     path: '/owner/barber',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOwnerBookingRoute =
+  AuthenticatedOwnerBookingRouteImport.update({
+    id: '/owner_/booking',
+    path: '/owner/booking',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOwnerKasirRoute = AuthenticatedOwnerKasirRouteImport.update({
+  id: '/owner_/kasir',
+  path: '/owner/kasir',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOwnerLayananRoute =
   AuthenticatedOwnerLayananRouteImport.update({
     id: '/owner_/layanan',
@@ -65,18 +96,28 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/booking': typeof BookingRoute
+  '/barber': typeof AuthenticatedBarberRoute
+  '/kasir': typeof AuthenticatedKasirRoute
   '/owner': typeof AuthenticatedOwnerRoute
+  '/booking/$bookingId': typeof BookingBookingIdRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
   '/owner/barber': typeof AuthenticatedOwnerBarberRoute
+  '/owner/booking': typeof AuthenticatedOwnerBookingRoute
+  '/owner/kasir': typeof AuthenticatedOwnerKasirRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/booking': typeof BookingRoute
+  '/barber': typeof AuthenticatedBarberRoute
+  '/kasir': typeof AuthenticatedKasirRoute
   '/owner': typeof AuthenticatedOwnerRoute
+  '/booking/$bookingId': typeof BookingBookingIdRoute
   '/owner/$section': typeof AuthenticatedOwnerSectionRoute
   '/owner/barber': typeof AuthenticatedOwnerBarberRoute
+  '/owner/booking': typeof AuthenticatedOwnerBookingRoute
+  '/owner/kasir': typeof AuthenticatedOwnerKasirRoute
   '/owner/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRoutesById {
@@ -85,9 +126,14 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/booking': typeof BookingRoute
+  '/_authenticated/barber': typeof AuthenticatedBarberRoute
+  '/_authenticated/kasir': typeof AuthenticatedKasirRoute
   '/_authenticated/owner': typeof AuthenticatedOwnerRoute
+  '/booking_/$bookingId': typeof BookingBookingIdRoute
   '/_authenticated/owner_/$section': typeof AuthenticatedOwnerSectionRoute
   '/_authenticated/owner_/barber': typeof AuthenticatedOwnerBarberRoute
+  '/_authenticated/owner_/booking': typeof AuthenticatedOwnerBookingRoute
+  '/_authenticated/owner_/kasir': typeof AuthenticatedOwnerKasirRoute
   '/_authenticated/owner_/layanan': typeof AuthenticatedOwnerLayananRoute
 }
 export interface FileRouteTypes {
@@ -96,18 +142,28 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/booking'
+    | '/barber'
+    | '/kasir'
     | '/owner'
+    | '/booking/$bookingId'
     | '/owner/$section'
     | '/owner/barber'
+    | '/owner/booking'
+    | '/owner/kasir'
     | '/owner/layanan'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/booking'
+    | '/barber'
+    | '/kasir'
     | '/owner'
+    | '/booking/$bookingId'
     | '/owner/$section'
     | '/owner/barber'
+    | '/owner/booking'
+    | '/owner/kasir'
     | '/owner/layanan'
   id:
     | '__root__'
@@ -115,9 +171,14 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/booking'
+    | '/_authenticated/barber'
+    | '/_authenticated/kasir'
     | '/_authenticated/owner'
+    | '/booking_/$bookingId'
     | '/_authenticated/owner_/$section'
     | '/_authenticated/owner_/barber'
+    | '/_authenticated/owner_/booking'
+    | '/_authenticated/owner_/kasir'
     | '/_authenticated/owner_/layanan'
   fileRoutesById: FileRoutesById
 }
@@ -126,6 +187,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BookingRoute: typeof BookingRoute
+  BookingBookingIdRoute: typeof BookingBookingIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -158,12 +220,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/barber': {
+      id: '/_authenticated/barber'
+      path: '/barber'
+      fullPath: '/barber'
+      preLoaderRoute: typeof AuthenticatedBarberRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kasir': {
+      id: '/_authenticated/kasir'
+      path: '/kasir'
+      fullPath: '/kasir'
+      preLoaderRoute: typeof AuthenticatedKasirRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/owner': {
       id: '/_authenticated/owner'
       path: '/owner'
       fullPath: '/owner'
       preLoaderRoute: typeof AuthenticatedOwnerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/booking_/$bookingId': {
+      id: '/booking_/$bookingId'
+      path: '/booking/$bookingId'
+      fullPath: '/booking/$bookingId'
+      preLoaderRoute: typeof BookingBookingIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/owner_/$section': {
       id: '/_authenticated/owner_/$section'
@@ -179,6 +262,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOwnerBarberRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/owner_/booking': {
+      id: '/_authenticated/owner_/booking'
+      path: '/owner/booking'
+      fullPath: '/owner/booking'
+      preLoaderRoute: typeof AuthenticatedOwnerBookingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/owner_/kasir': {
+      id: '/_authenticated/owner_/kasir'
+      path: '/owner/kasir'
+      fullPath: '/owner/kasir'
+      preLoaderRoute: typeof AuthenticatedOwnerKasirRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/owner_/layanan': {
       id: '/_authenticated/owner_/layanan'
       path: '/owner/layanan'
@@ -190,16 +287,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBarberRoute: typeof AuthenticatedBarberRoute
+  AuthenticatedKasirRoute: typeof AuthenticatedKasirRoute
   AuthenticatedOwnerRoute: typeof AuthenticatedOwnerRoute
   AuthenticatedOwnerSectionRoute: typeof AuthenticatedOwnerSectionRoute
   AuthenticatedOwnerBarberRoute: typeof AuthenticatedOwnerBarberRoute
+  AuthenticatedOwnerBookingRoute: typeof AuthenticatedOwnerBookingRoute
+  AuthenticatedOwnerKasirRoute: typeof AuthenticatedOwnerKasirRoute
   AuthenticatedOwnerLayananRoute: typeof AuthenticatedOwnerLayananRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBarberRoute: AuthenticatedBarberRoute,
+  AuthenticatedKasirRoute: AuthenticatedKasirRoute,
   AuthenticatedOwnerRoute: AuthenticatedOwnerRoute,
   AuthenticatedOwnerSectionRoute: AuthenticatedOwnerSectionRoute,
   AuthenticatedOwnerBarberRoute: AuthenticatedOwnerBarberRoute,
+  AuthenticatedOwnerBookingRoute: AuthenticatedOwnerBookingRoute,
+  AuthenticatedOwnerKasirRoute: AuthenticatedOwnerKasirRoute,
   AuthenticatedOwnerLayananRoute: AuthenticatedOwnerLayananRoute,
 }
 
@@ -211,6 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BookingRoute: BookingRoute,
+  BookingBookingIdRoute: BookingBookingIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

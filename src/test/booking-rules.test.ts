@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { availableSlots, depositFor } from "@/lib/booking-rules";
+import { fromZonedTime } from "date-fns-tz";
+import { availableSlots, cancellationRefundEligible, depositFor, isPaymentExpired, validProofImage } from "@/lib/booking-rules";
 
 describe("booking rules", () => {
   it("deposit is 50% of service price", () => expect(depositFor(80000)).toBe(40000));
@@ -11,5 +12,20 @@ describe("booking rules", () => {
   it("excludes slots that clash with existing bookings", () => {
     const s = availableSlots(60, [{ start_time: "12:30:00", end_time: "13:30:00" }]);
     expect(s).not.toContain("12:00"); expect(s).not.toContain("13:00"); expect(s).toContain("14:00");
+  });
+  it("supports a deposit percentage from settings", () => expect(depositFor(80000, 25)).toBe(20000));
+  it("expires unpaid bookings exactly after 30 minutes", () => {
+    const created = "2026-11-28T04:00:00.000Z";
+    expect(isPaymentExpired(created, new Date("2026-11-28T04:30:00.000Z"))).toBe(false);
+    expect(isPaymentExpired(created, new Date("2026-11-28T04:30:00.001Z"))).toBe(true);
+  });
+  it("allows a DP refund only at least two hours before the WIB appointment", () => {
+    const now = new Date("2026-11-28T02:00:00.000Z");
+    expect(cancellationRefundEligible("2026-11-28", "11:00:00", "Asia/Jakarta", now, fromZonedTime)).toBe(true);
+    expect(cancellationRefundEligible("2026-11-28", "10:59:59", "Asia/Jakarta", now, fromZonedTime)).toBe(false);
+  });
+  it("rejects files larger than 2 MB even with an image MIME type", async () => {
+    const file = new File([new Uint8Array(2 * 1024 * 1024 + 1)], "proof.jpg", { type: "image/jpeg" });
+    expect(await validProofImage(file)).toBe(false);
   });
 });
