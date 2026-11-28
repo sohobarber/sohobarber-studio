@@ -25,11 +25,11 @@ export const getCashierWorkspace = createServerFn({ method: "POST" }).middleware
     for (const result of [services, products, barbers, bookings, transactions]) if (result.error) { console.error("cashier workspace", result.error); throw new Error("Data kasir tidak dapat dimuat."); }
     return {
       profile,
-      services: services.data.map(s => ({ ...s, price: Number(s.price) })),
-      products: products.data.map(p => ({ ...p, price: Number(p.price) })),
-      barbers: barbers.data,
-      bookings: bookings.data.map(b => ({ ...b, service_price: Number(b.service_price), deposit_paid: Number(b.deposit_paid) })),
-      transactions: transactions.data.map(t => ({ ...t, subtotal: Number(t.subtotal), discount_amount: Number(t.discount_amount), total_amount: Number(t.total_amount), deposit_applied: Number(t.deposit_applied), amount_paid: Number(t.amount_paid) })),
+      services: (services.data ?? []).map(s => ({ ...s, price: Number(s.price) })),
+      products: (products.data ?? []).map(p => ({ ...p, price: Number(p.price) })),
+      barbers: barbers.data ?? [],
+      bookings: (bookings.data ?? []).map(b => ({ ...b, service_price: Number(b.service_price), deposit_paid: Number(b.deposit_paid) })),
+      transactions: (transactions.data ?? []).map(t => ({ ...t, subtotal: Number(t.subtotal), discount_amount: Number(t.discount_amount), total_amount: Number(t.total_amount), deposit_applied: Number(t.deposit_applied), amount_paid: Number(t.amount_paid) })),
     };
   });
 
